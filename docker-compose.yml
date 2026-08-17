@@ -9,6 +9,9 @@ services:
       - "5174:5173"
     environment:
       - NODE_ENV=development
+      # Lido por $env/static/public no build do Vite; a URL é resolvida pelo
+      # navegador do host, por isso localhost e não o nome do serviço backend.
+      - PUBLIC_API_URL=${PUBLIC_API_URL:-http://localhost:8000/api}
     volumes:
       - ./frontend:/app
       - /app/node_modules
