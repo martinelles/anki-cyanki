@@ -12,7 +12,9 @@ services:
   frontend:
     image: nginx:alpine
     ports:
-      - "3015:3015"
+      # so no loopback: o tunel nao passa por aqui, alcanca o servico pela
+      # rede interna do compose
+      - "127.0.0.1:80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     restart: unless-stopped
