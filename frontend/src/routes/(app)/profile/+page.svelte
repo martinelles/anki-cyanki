@@ -1,6 +1,7 @@
 <script lang="ts">
     import { browser } from '$app/environment';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
     import { session } from '$lib/authStore';
     import { PUBLIC_API_URL } from '$env/static/public';
     import {
@@ -104,6 +105,17 @@
     });
 
     // ─── Helpers ───────────────────────────────────────────────────────────────
+    // O perfil é alcançável de qualquer página pela Sidebar, então voltar é
+    // desfazer a última navegação. Em carga direta (sem histórico interno),
+    // cai no dashboard.
+    function goBack() {
+        if (browser && window.history.length > 1) {
+            window.history.back();
+        } else {
+            goto('/dashboard');
+        }
+    }
+
     function toggleSubject(id: string) {
         selectedSubjects = selectedSubjects.includes(id)
             ? selectedSubjects.filter(s => s !== id)
@@ -230,9 +242,21 @@
 
         <!-- Header -->
         <div class="flex items-start justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-tight">Perfil & Preferências</h1>
-                <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Gerencie suas informações pessoais e configurações de estudo.</p>
+            <div class="flex items-start gap-3">
+                <button
+                    on:click={goBack}
+                    aria-label="Voltar"
+                    title="Voltar"
+                    class="shrink-0 mt-1 p-2 rounded-xl text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight">Perfil & Preferências</h1>
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">Gerencie suas informações pessoais e configurações de estudo.</p>
+                </div>
             </div>
             <button
                 on:click={savePreferences}
