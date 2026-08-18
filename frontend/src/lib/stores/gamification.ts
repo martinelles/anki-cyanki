@@ -7,16 +7,13 @@ export interface GamificationState {
     level: number;
     streak: number;
     lastStudyDate: string | null;
-    /** UC-10: Coins are the mini-game currency. Earned alongside XP on every FSRS review. */
-    coins: number;
 }
 
 const defaultState: GamificationState = {
     xp: 0,
     level: 1,
     streak: 0,
-    lastStudyDate: null,
-    coins: 0
+    lastStudyDate: null
 };
 
 const getInitialState = (): GamificationState => {
@@ -25,8 +22,8 @@ const getInitialState = (): GamificationState => {
         if (stored) {
             try {
                 const parsed = JSON.parse(stored);
-                // Backfill coins for existing users who didn't have the field
-                if (typeof parsed.coins !== 'number') parsed.coins = 0;
+                // Saldo de moedas de quem usou a versao com mini-games e ignorado
+                delete parsed.coins;
                 return parsed;
             } catch (e) {
                 console.error("Failed to parse gamification state", e);
@@ -46,46 +43,27 @@ gamificationStore.subscribe(value => {
 
 export function addXP(amount: number) {
     gamificationStore.update(state => {
-        let { xp, level, streak, lastStudyDate, coins } = state;
+        let { xp, level, streak, lastStudyDate } = state;
         xp += amount;
         while (xp >= 100) {
             xp -= 100;
             level += 1;
         }
-        return { xp, level, streak, lastStudyDate, coins };
+        return { xp, level, streak, lastStudyDate };
     });
 }
 
-/** UC-10: Award coins from FSRS study sessions. 1 coin per review. */
-export function addCoins(amount: number) {
-    gamificationStore.update(state => ({ ...state, coins: state.coins + amount }));
-}
 
-/**
- * UC-10: Spend coins to unlock a mini-game.
- * Returns true and deducts if balance is sufficient, false otherwise.
- */
-export function spendCoins(amount: number): boolean {
-    let success = false;
-    gamificationStore.update(state => {
-        if (state.coins >= amount) {
-            success = true;
-            return { ...state, coins: state.coins - amount };
-        }
-        return state;
-    });
-    return success;
-}
 
 export function checkStreak() {
     gamificationStore.update(state => {
-        let { xp, level, streak, lastStudyDate, coins } = state;
+        let { xp, level, streak, lastStudyDate } = state;
         const todayStr = new Date().toDateString();
 
         if (!lastStudyDate) {
             streak = 1;
             lastStudyDate = new Date().toISOString();
-            return { xp, level, streak, lastStudyDate, coins };
+            return { xp, level, streak, lastStudyDate };
         }
 
         const lastDate = new Date(lastStudyDate);
@@ -105,7 +83,7 @@ export function checkStreak() {
         }
 
         lastStudyDate = new Date().toISOString();
-        return { xp, level, streak, lastStudyDate, coins };
+        return { xp, level, streak, lastStudyDate };
     });
 }
 

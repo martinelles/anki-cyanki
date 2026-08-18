@@ -102,7 +102,7 @@ export class SyncEngine {
                 const data = await response.json();
 
                 // Intelligently UPSERT server data resolving conflicts via Timestamps
-                await db.transaction('rw', db.notebooks, db.flashcards, db.reviewLogs, db.leaderboard, db.savedFilters, async () => {
+                await db.transaction('rw', db.notebooks, db.flashcards, db.reviewLogs, db.savedFilters, async () => {
                     // Load tombstones — items the user explicitly deleted locally
                     const deletedNbIds = getDeletedNotebookIds();
                     const deletedFcIds = getDeletedFlashcardIds();
@@ -165,12 +165,6 @@ export class SyncEngine {
                         if (safePuts.length > 0) await db.reviewLogs.bulkPut(safePuts);
                     }
 
-                    if (data.leaderboard && data.leaderboard.length > 0) {
-                        // Leaderboard is typically fully replaced or upserted
-                        const safePuts = data.leaderboard;
-                        await db.leaderboard.bulkPut(safePuts);
-                    }
-
                     if (data.savedFilters && data.savedFilters.length > 0) {
                         const locals = await db.savedFilters.toArray();
                         const localMap = new Map(locals.map(f => [f.id, f]));
@@ -197,7 +191,7 @@ export class SyncEngine {
                     }
                 });
 
-                // Apply server-merged gamification state (max-wins: fixes coins cross-device)
+                // Apply server-merged gamification state (max-wins entre dispositivos)
                 if (data.gamificationState) {
                     const sg = data.gamificationState;
                     gamificationStore.update(local => {
@@ -208,7 +202,6 @@ export class SyncEngine {
                             xp: winnerTotal % 100,
                             level: Math.floor(winnerTotal / 100) + 1,
                             streak: Math.max(local.streak, sg.streak),
-                            coins: Math.max(local.coins, sg.coins),
                             lastStudyDate: (sg.lastStudyDate && local.lastStudyDate)
                                 ? (sg.lastStudyDate > local.lastStudyDate ? sg.lastStudyDate : local.lastStudyDate)
                                 : (sg.lastStudyDate || local.lastStudyDate)

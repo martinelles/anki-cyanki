@@ -4,7 +4,7 @@
     import { db, type Flashcard } from '$lib/db';
     import { parseAndInjectNotebookFlashcards } from '$lib/notebookParser';
     import { getAllCardStates, processReview, Rating } from '$lib/fsrs';
-    import { addXP, addCoins, checkStreak } from '$lib/stores/gamification';
+    import { addXP, checkStreak } from '$lib/stores/gamification';
     import { saveSession, clearSession } from '$lib/stores/sessionContext';
     import { syncEngine } from '$lib/sync';
     import { goto } from '$app/navigation';
@@ -67,7 +67,7 @@
     async function rateCard(rating: Rating) {
         if (!currentCard) return;
         await processReview(currentCard.id, rating);
-        addXP(10); addCoins(1);
+        addXP(10);
         sessionCardCount++;
         if (sessionCardCount === 10) checkStreak();
         saveSession({ type: 'notebook', id: notebookId, name: notebookTitle, cardIndex: currentIndex + 1, totalCards: dueCards.length, savedAt: Date.now() });

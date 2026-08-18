@@ -16,7 +16,6 @@
         notebooks: 0,
         reviewLogs: 0,
         syncQueue: 0,
-        challenges: 0,
         studyGoals: 0,
         savedFilters: 0,
     };
@@ -54,7 +53,6 @@
                 counts.notebooks,
                 counts.reviewLogs,
                 counts.syncQueue,
-                counts.challenges,
                 counts.studyGoals,
                 counts.savedFilters,
                 notebooks,
@@ -66,7 +64,6 @@
                 db.notebooks.count(),
                 db.reviewLogs.count(),
                 db.syncQueue.count(),
-                db.challenges.count(),
                 db.studyGoals.count(),
                 db.savedFilters.count(),
                 db.notebooks.orderBy('updatedAt').reverse().toArray(),
@@ -467,7 +464,6 @@
                             ['Flashcards', counts.flashcards, 'text-indigo-600 dark:text-indigo-400'],
                             ['Cadernos', counts.notebooks, 'text-violet-600 dark:text-violet-400'],
                             ['Revisões', counts.reviewLogs, 'text-amber-600 dark:text-amber-400'],
-                            ['Desafios', counts.challenges, 'text-emerald-600 dark:text-emerald-400'],
                         ] as [label, count, cls]}
                             <div class="p-2.5 bg-neutral-50 dark:bg-neutral-900/50 rounded-xl text-center">
                                 <div class="text-lg font-black {cls}">{count}</div>

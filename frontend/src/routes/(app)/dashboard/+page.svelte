@@ -298,10 +298,6 @@
 				<span class="text-2xl font-black text-violet-500 dark:text-violet-400">{$gamificationStore.xp} XP</span>
 				<span class="text-[10px] font-extrabold text-violet-700/60 dark:text-violet-300/60 uppercase tracking-widest mt-1">XP Atual</span>
 			</div>
-			<div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex flex-col items-center justify-center">
-				<span class="text-2xl font-black text-amber-500 dark:text-amber-400">🪙 {$gamificationStore.coins}</span>
-				<span class="text-[10px] font-extrabold text-amber-700/60 dark:text-amber-300/60 uppercase tracking-widest mt-1">Moedas</span>
-			</div>
 		</section>
 		{/if}
 

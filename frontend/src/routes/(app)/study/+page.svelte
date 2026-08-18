@@ -2,7 +2,7 @@
     import { onMount, tick } from 'svelte';
     import { getAllCardStates, processReview, Rating } from '$lib/fsrs';
     import { buildDailyQueue, SEGMENT_LABEL, type QueueEntry } from '$lib/dailyQueue';
-    import { addXP, addCoins, checkStreak } from '$lib/stores/gamification';
+    import { addXP, checkStreak } from '$lib/stores/gamification';
     import { saveSession, clearSession } from '$lib/stores/sessionContext';
     import { db } from '$lib/db';
     import { syncEngine } from '$lib/sync';
@@ -67,7 +67,7 @@
     async function rateCard(rating: Rating) {
         if (!currentCard) return;
         await processReview(currentCard.id, rating);
-        addXP(10); addCoins(1);
+        addXP(10);
         sessionCardCount++;
         if (sessionCardCount === 10) checkStreak();
 

@@ -47,7 +47,10 @@ VAULT_PADRAO = Path.home() / "OneDrive - mtegovbr" / "00. vault"
 IGNORAR_NO_VAULT = {"_claude", ".obsidian", ".trash"}
 
 # Nao e ordem alfabetica de proposito: e a ordem em que se olha um quadro.
-ORDEM_ESTADO = ["A fazer", "Em andamento", "Revisao", "Bloqueado", "Concluido"]
+# "Descartado" fecha a lista: e item que saiu do produto por decisao, nao por
+# entrega. Sem esse estado a unica saida seria apagar a linha, e ai o motivo de
+# ter saido some junto — que e exatamente o que o CSV existe para impedir.
+ORDEM_ESTADO = ["A fazer", "Em andamento", "Revisao", "Bloqueado", "Concluido", "Descartado"]
 ABERTOS = {"A fazer", "Em andamento", "Revisao", "Bloqueado"}
 
 COLUNAS = [
@@ -226,12 +229,15 @@ def render_resumo(itens: list[dict], avisos: dict) -> str:
     """A visao do vault: para ela ler, nao para o agente trabalhar."""
     abertos = [i for i in itens if i["estado"] in ABERTOS]
     fechados = [i for i in itens if i["estado"] == "Concluido"]
+    descartados = [i for i in itens if i["estado"] == "Descartado"]
 
     p = [CABECALHO, "---", f"projeto: {PROJETO}", f"gerado: {date.today().isoformat()}",
          "fonte: ESTADO.csv no repositório do projeto",
          "tags: [projeto, gerado]", "---", "",
          f"# Resumo — {PROJETO}", "",
-         f"**{len(fechados)} itens concluídos, {len(abertos)} em aberto.** Esta página é "
+         f"**{len(fechados)} itens concluídos, {len(abertos)} em aberto"
+         + (f", {len(descartados)} descartados" if descartados else "")
+         + ".** Esta página é "
          "gerada a partir de `ESTADO.csv`: o que estiver aqui está no CSV, e o que não "
          "estiver no CSV não existe.", ""]
 

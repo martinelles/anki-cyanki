@@ -11,24 +11,22 @@
         notebooks: 0,
         reviewLogs: 0,
         savedFilters: 0,
-        challenges: 0,
         studyGoals: 0,
         mediaCache: 0,
         syncQueue: 0,
     };
 
     onMount(async () => {
-        const [fc, nb, rl, sf, ch, sg, mc, sq] = await Promise.all([
+        const [fc, nb, rl, sf, sg, mc, sq] = await Promise.all([
             db.flashcards.count(),
             db.notebooks.count(),
             db.reviewLogs.count(),
             db.savedFilters.count(),
-            db.challenges.count(),
             db.studyGoals.count(),
             db.mediaCache.count(),
             db.syncQueue.count(),
         ]);
-        counts = { flashcards: fc, notebooks: nb, reviewLogs: rl, savedFilters: sf, challenges: ch, studyGoals: sg, mediaCache: mc, syncQueue: sq };
+        counts = { flashcards: fc, notebooks: nb, reviewLogs: rl, savedFilters: sf, studyGoals: sg, mediaCache: mc, syncQueue: sq };
     });
 
     // ─── Export my data ────────────────────────────────────────────────────────
@@ -38,19 +36,18 @@
         isExporting = true;
         await new Promise(r => setTimeout(r, 60));
         try {
-            const [flashcards, notebooks, reviewLogs, savedFilters, challenges, studyGoals] = await Promise.all([
+            const [flashcards, notebooks, reviewLogs, savedFilters, studyGoals] = await Promise.all([
                 db.flashcards.toArray(),
                 db.notebooks.toArray(),
                 db.reviewLogs.toArray(),
                 db.savedFilters.toArray(),
-                db.challenges.toArray(),
                 db.studyGoals.toArray(),
             ]);
 
             const payload = {
                 exportedAt: new Date().toISOString(),
                 email: $session.email,
-                data: { flashcards, notebooks, reviewLogs, savedFilters, challenges, studyGoals }
+                data: { flashcards, notebooks, reviewLogs, savedFilters, studyGoals }
             };
 
             const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' });
@@ -223,7 +220,6 @@
                 { label: 'Cadernos',       count: counts.notebooks,    icon: '📓' },
                 { label: 'Revisões',       count: counts.reviewLogs,   icon: '📊' },
                 { label: 'Filtros',        count: counts.savedFilters, icon: '🔖' },
-                { label: 'Desafios',       count: counts.challenges,   icon: '🏆' },
                 { label: 'Metas',          count: counts.studyGoals,   icon: '🎯' },
                 { label: 'Mídia (cache)',  count: counts.mediaCache,   icon: '🖼️' },
                 { label: 'Fila de sync',   count: counts.syncQueue,    icon: '🔄' },

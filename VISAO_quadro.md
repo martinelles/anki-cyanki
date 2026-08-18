@@ -11,7 +11,8 @@
 | Em andamento | 1 |
 | Revisao | 0 |
 | Bloqueado | 0 |
-| Concluido | 45 |
+| Concluido | 42 |
+| Descartado | 3 |
 
 ---
 
@@ -40,13 +41,12 @@
 
 - `UC-34` Multiplicador de Intervalo FSRS por Tipo de Cartão · **Chrystian Nascimento**
 
-## Concluido (45)
+## Concluido (42)
 
 **2.1 Offline & Sincronização**
 
 - `UC-01` UI Otimista com Fila de Sincronização · **Chrystian Nascimento** ⚠ *nunca conferido*
 - `UC-02` Armazenamento Separado para Conteúdo Offline · **Chrystian Nascimento** ⚠ *nunca conferido*
-- `UC-03` Ranking Sincronizado e Projeção Offline · **Chrystian Nascimento** ⚠ *nunca conferido*
 
 **2.2 Filtragem & Busca**
 
@@ -59,12 +59,10 @@
 - `UC-07` Resolução de Questões com Feedback em Tempo Real · **Chrystian Nascimento** ⚠ *nunca conferido*
 - `UC-08` Estudo Contínuo com Repetição Espaçada (FSRS) · **Chrystian Nascimento** ⚠ *nunca conferido*
 - `UC-09` Mestria e Níveis de Proficiência · **Chrystian Nascimento** ⚠ *nunca conferido*
-- `UC-10` Mini-Games Educativos e Economia de Pontos · **Chrystian Nascimento** ⚠ *nunca conferido*
 
 **2.4 Gamificação & Engajamento**
 
 - `UC-11` Estudo Contínuo e Gamificação (Streak) · **Chrystian Nascimento** ⚠ *nunca conferido*
-- `UC-12` Criação de Desafios Comunitários · **Chrystian Nascimento** ⚠ *nunca conferido*
 
 **2.5 Metas & Notificações**
 
@@ -131,4 +129,18 @@
 **Achados do codigo**
 
 - `ACH-03` Checklist de criterios chegava truncado no primeiro item · **Martinelle Santos**
+
+## Descartado (3)
+
+**2.1 Offline & Sincronização**
+
+- `UC-03` Ranking Sincronizado e Projeção Offline · **Martinelle Santos**
+
+**2.3 Estudo & Aprendizado**
+
+- `UC-10` Mini-Games Educativos e Economia de Pontos · **Martinelle Santos**
+
+**2.4 Gamificação & Engajamento**
+
+- `UC-12` Criação de Desafios Comunitários · **Martinelle Santos**
 

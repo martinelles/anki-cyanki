@@ -38,14 +38,6 @@ export interface Notebook {
     updatedAt: number;
 }
 
-export interface LeaderboardEntry {
-    id: string; // userId
-    name: string;
-    xp: number;
-    position: number;
-    updatedAt: number;
-}
-
 export interface SavedFilter {
     id: string; // NanoID
     name: string; // User defined name for the filter
@@ -107,38 +99,14 @@ export interface GroupSession {
     synced: boolean;
 }
 
-// UC-12: Community challenges — offline-first, shareable via 6-char code
-export interface Challenge {
-    id: string;                       // NanoID primary key
-    code: string;                     // 6-char uppercase sharing code (e.g. "X7K2M9")
-    title: string;
-    description?: string;
-    /** Filter criteria used to sample cards at creation time */
-    criteria: {
-        tags: string[];
-        keyword?: string;
-        difficulty?: string;
-    };
-    /** Immutable snapshot of card IDs selected at creation — never changes after creation */
-    cardIds: string[];
-    cardCount: number;
-    isPublic: boolean;
-    createdAt: number;
-    /** Number of times the challenge was attempted locally */
-    attempts: number;
-    /** Whether it has been pushed to the server sync queue */
-    synced: boolean;
-}
 
 export class CyankiDB extends Dexie {
     flashcards!: Table<Flashcard, string>;
     reviewLogs!: Table<ReviewLog, number>;
     syncQueue!: Table<SyncQueue, number>;
     notebooks!: Table<Notebook, string>;
-    leaderboard!: Table<LeaderboardEntry, string>;
     savedFilters!: Table<SavedFilter, string>;
     mediaCache!: Table<MediaCacheEntry, string>;
-    challenges!: Table<Challenge, string>;
     studyGoals!: Table<StudyGoal, string>;
     notebookGroups!: Table<NotebookGroup, string>;
     groupSessions!: Table<GroupSession, string>;
@@ -188,6 +156,14 @@ export class CyankiDB extends Dexie {
             notebookGroups: 'id, notebookId, [notebookId+groupIndex]',
             groupSessions: 'id, groupId, notebookId, studiedAt'
         });
+
+        // v11: derruba leaderboard (UC-03) e challenges (UC-12). Ranking e desafio
+        // comunitario saíram do produto: comparacao com outro concurseiro nao diz
+        // nada sobre o corte da propria prova. `null` apaga a tabela no upgrade.
+        this.version(11).stores({
+            leaderboard: null,
+            challenges: null
+        });
     }
 }
 
@@ -199,10 +175,8 @@ export async function clearCyankiData() {
         db.reviewLogs.clear(),
         db.syncQueue.clear(),
         db.notebooks.clear(),
-        db.leaderboard.clear(),
         db.savedFilters.clear(),
         db.mediaCache.clear(),
-        db.challenges.clear(),
         db.studyGoals.clear(),
         db.notebookGroups.clear(),
         db.groupSessions.clear()

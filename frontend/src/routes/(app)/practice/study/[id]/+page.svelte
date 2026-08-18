@@ -3,7 +3,7 @@
     import { onMount, tick } from 'svelte';
     import { db, type Flashcard } from '$lib/db';
     import { getAllCardStates, processReview, Rating } from '$lib/fsrs';
-    import { addXP, addCoins, checkStreak } from '$lib/stores/gamification';
+    import { addXP, checkStreak } from '$lib/stores/gamification';
     import { saveSession, clearSession } from '$lib/stores/sessionContext';
     import { syncEngine } from '$lib/sync';
     import { goto } from '$app/navigation';
@@ -109,7 +109,6 @@
 
         await processReview(currentCard.id, rating);
         addXP(10);
-        addCoins(1);
         sessionCardCount++;
         if (sessionCardCount === 10) checkStreak();
 
