@@ -59,12 +59,15 @@ export function parsePromptMasterCards(markdown: string): ParsedPromptCard[] {
                 .filter(Boolean);
         }
 
-        // Critérios: block — everything from "Critérios:" to "Tags:" (or end)
-        const criteriaMatch = block.match(/^Crit[eé]rios?:\s*\r?\n([\s\S]+?)(?=\nTags:|\n\nQ:|$)/im);
+        // Critérios: block — everything from "Critérios:" to "Tags:" (or end).
+        // O fim do bloco é `(?![\s\S])`, não `$`: com a flag `m`, `$` casa no fim
+        // de qualquer linha, e a busca preguiçosa parava no primeiro item —
+        // todo checklist com mais de um critério chegava truncado ao cartão.
+        const criteriaMatch = block.match(/^Crit[eé]rios?:\s*\r?\n([\s\S]+?)(?=\nTags:|\n\nQ:|(?![\s\S]))/im);
         if (criteriaMatch) card.criteria = criteriaMatch[1].trim();
 
         // A: — from after "A:" up to "Critérios:" or "Tags:" or end
-        const aMatch = block.match(/^A:\s*([\s\S]+?)(?=\nCrit[eé]rios?:|\nTags:|\n\nQ:|$)/im);
+        const aMatch = block.match(/^A:\s*([\s\S]+?)(?=\nCrit[eé]rios?:|\nTags:|\n\nQ:|(?![\s\S]))/im);
         if (aMatch) card.back = aMatch[1].trim();
 
         if (card.front && card.back) cards.push(card);
