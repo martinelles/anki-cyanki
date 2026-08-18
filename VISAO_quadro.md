@@ -7,15 +7,15 @@
 
 | Coluna | Itens |
 |---|---:|
-| A fazer | 10 |
+| A fazer | 8 |
 | Em andamento | 1 |
 | Revisao | 0 |
 | Bloqueado | 0 |
-| Concluido | 41 |
+| Concluido | 43 |
 
 ---
 
-## A fazer (10)
+## A fazer (8)
 
 **Pendentes fora do escopo atual**
 
@@ -30,9 +30,7 @@
 
 **Issues do GitHub**
 
-- `ISS-01` Incluir botão de voltar no menu Profile · **A NOMEAR ⚠**
 - `ISS-02` Melhorar mensagens de erro na inserção de chaves Gemini · **A NOMEAR ⚠**
-- `ISS-04` Inserir um modelo ou instruções de .md ao criar um caderno · **A NOMEAR ⚠**
 - `ISS-05` Página de simulados da comunidade não existe · **A NOMEAR ⚠**
 - `ISS-06` Página Meus simulados não existe · **A NOMEAR ⚠**
 
@@ -42,7 +40,7 @@
 
 - `UC-34` Multiplicador de Intervalo FSRS por Tipo de Cartão · **Chrystian Nascimento**
 
-## Concluido (41)
+## Concluido (43)
 
 **2.1 Offline & Sincronização**
 
@@ -125,5 +123,7 @@
 
 **Issues do GitHub**
 
+- `ISS-01` Incluir botão de voltar no menu Profile · **Martinelle Santos**
 - `ISS-03` Padronizar língua do produto entre inglês e português · **Martinelle Santos**
+- `ISS-04` Inserir um modelo ou instruções de .md ao criar um caderno · **Martinelle Santos**
 

@@ -6,6 +6,7 @@
 	import { liveQuery } from 'dexie';
 	import { parseAndInjectNotebookFlashcards } from '$lib/notebookParser';
 	import { markNotebooksDeleted, markFlashcardsDeleted } from '$lib/localDeletions';
+	import { notebookTemplate } from '$lib/markdownTemplate';
 
 	let titleInput = '';
 	let notebooks: Notebook[] = [];
@@ -49,7 +50,7 @@
 		const newNotebook: Notebook = {
 			id: nanoid(),
 			title: titleInput.trim(),
-			content: '# ' + titleInput.trim() + '\n\n',
+			content: notebookTemplate(titleInput.trim()),
 			createdAt: Date.now(),
 			updatedAt: Date.now()
 		};

@@ -105,6 +105,9 @@ export default defineConfig({
     test: {
         include: ['src/**/*.{test,spec}.{js,ts}'],
         environment: 'jsdom',
+        // vitest-setup.ts importa @testing-library/jest-dom, que estende o
+        // `expect` global — sem globals:true nenhum teste chega a rodar.
+        globals: true,
         setupFiles: ['./vitest-setup.ts'],
     }
 });

@@ -6,6 +6,7 @@
     import { db, type Flashcard } from '$lib/db';
     import { syncEngine } from '$lib/sync';
     import { parsePromptMasterCards, promptCardToFlashcard, type ParsedPromptCard } from '$lib/notebookParser';
+    import { EXAMPLE_MD, downloadMarkdown } from '$lib/markdownTemplate';
 
     // --- State ---
     type CardAction = 'approved' | 'review' | 'discarded';
@@ -74,7 +75,7 @@
         });
 
         if (previewCards.length === 0) {
-            parseError = 'Nenhum flashcard encontrado no arquivo. Verifique o formato (Prompt Master: Q:/A: ou Anki: frente;verso).';
+            parseError = 'Nenhum flashcard encontrado no arquivo. Baixe o modelo abaixo e compare: "Q:" e "A:" precisam começar na primeira coluna da linha.';
             return;
         }
 
@@ -182,7 +183,14 @@
                 {/if}
 
                 <div class="p-4 rounded-xl bg-neutral-800 border border-neutral-700 space-y-3">
-                    <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Formatos suportados</p>
+                    <div class="flex items-center justify-between gap-4">
+                        <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Formatos suportados</p>
+                        <button on:click={() => downloadMarkdown('modelo-flashcards.md', EXAMPLE_MD)}
+                            class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-300 hover:bg-indigo-600/30 transition shrink-0">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Baixar modelo .md
+                        </button>
+                    </div>
                     <div class="space-y-2 text-xs text-neutral-500 font-mono">
                         <p class="text-neutral-400 font-semibold">Prompt Master:</p>
                         <pre class="bg-neutral-900 p-3 rounded-lg overflow-auto">Tipo: CONCEITO
@@ -194,6 +202,11 @@ Tags: tag1, tag2</pre>
                         <p class="text-neutral-400 font-semibold mt-2">Anki básico:</p>
                         <pre class="bg-neutral-900 p-3 rounded-lg">Frente do cartão;Verso do cartão</pre>
                     </div>
+                    <ul class="text-xs text-neutral-500 space-y-1 pt-1 border-t border-neutral-700">
+                        <li><span class="text-neutral-400 font-semibold">Q:</span> e <span class="text-neutral-400 font-semibold">A:</span> são obrigatórios e precisam começar na primeira coluna da linha.</li>
+                        <li>Um cartão por bloco, separados por uma linha em branco.</li>
+                        <li><span class="text-neutral-400 font-semibold">Tipo</span> (CONCEITO · FATO · PROCEDIMENTO), <span class="text-neutral-400 font-semibold">Critérios</span> e <span class="text-neutral-400 font-semibold">Tags</span> são opcionais.</li>
+                    </ul>
                 </div>
             </div>
 
