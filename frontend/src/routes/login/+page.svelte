@@ -29,7 +29,7 @@
             });
 
             if (!response.ok) {
-                throw new Error('Invalid credentials');
+                throw new Error('E-mail ou senha inválidos.');
             }
 
             const data = await response.json();
@@ -68,43 +68,43 @@
             </div>
 
             <h2 class="text-4xl lg:text-5xl font-black leading-tight mb-6">
-                Master any subject with <br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-violet-300">Continuous Learning.</span>
+                Domine qualquer assunto com <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-violet-300">Aprendizado Contínuo.</span>
             </h2>
             <p class="text-lg text-indigo-100/80 max-w-xl mb-12 leading-relaxed">
-                A modern, offline-first study platform designed to supercharge your memory retention using cognitive science.
+                Uma plataforma de estudos moderna e offline-first, feita para turbinar sua retenção de memória com ciência cognitiva.
             </p>
 
             <!-- Feature Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 auto-rows-fr">
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl hover:bg-white/15 transition-all">
                     <div class="w-10 h-10 rounded-lg bg-indigo-500/30 flex items-center justify-center mb-4 text-xl border border-indigo-400/50 shadow-inner">⚡</div>
-                    <h3 class="font-bold text-lg mb-1 text-white">Offline-First</h3>
-                    <p class="text-sm text-indigo-100/70">Study perfectly without internet. We auto-sync via conflict-free queues instantly when you re-connect.</p>
+                    <h3 class="font-bold text-lg mb-1 text-white">Offline-first</h3>
+                    <p class="text-sm text-indigo-100/70">Estude sem internet. A sincronização é automática assim que você reconecta, por filas sem conflito.</p>
                 </div>
                 
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl hover:bg-white/15 transition-all">
                     <div class="w-10 h-10 rounded-lg bg-emerald-500/30 flex items-center justify-center mb-4 text-xl border border-emerald-400/50 shadow-inner">🧠</div>
-                    <h3 class="font-bold text-lg mb-1 text-white">FSRS Algorithm</h3>
-                    <p class="text-sm text-indigo-100/70">Powered by Free Spaced Repetition Scheduler. Forget manual scheduling, memorize naturally.</p>
+                    <h3 class="font-bold text-lg mb-1 text-white">Algoritmo FSRS</h3>
+                    <p class="text-sm text-indigo-100/70">Movido pelo Free Spaced Repetition Scheduler. Esqueça o agendamento manual e memorize com naturalidade.</p>
                 </div>
 
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl hover:bg-white/15 transition-all">
                     <div class="w-10 h-10 rounded-lg bg-orange-500/30 flex items-center justify-center mb-4 text-xl border border-orange-400/50 shadow-inner">🔥</div>
-                    <h3 class="font-bold text-lg mb-1 text-white">Gamification</h3>
-                    <p class="text-sm text-indigo-100/70">Build consistent study habits with daily streaks, XP gains, and visual rewards that keep you hooked.</p>
+                    <h3 class="font-bold text-lg mb-1 text-white">Gamificação</h3>
+                    <p class="text-sm text-indigo-100/70">Construa o hábito de estudo com ofensiva diária, ganho de XP e recompensas visuais que prendem você.</p>
                 </div>
 
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl hover:bg-white/15 transition-all">
                     <div class="w-10 h-10 rounded-lg bg-pink-500/30 flex items-center justify-center mb-4 text-xl border border-pink-400/50 shadow-inner">🌍</div>
-                    <h3 class="font-bold text-lg mb-1 text-white">Cross-Device</h3>
-                    <p class="text-sm text-indigo-100/70">Progress is fully synced across Web and Desktop giving you a unified ecosystem.</p>
+                    <h3 class="font-bold text-lg mb-1 text-white">Multidispositivo</h3>
+                    <p class="text-sm text-indigo-100/70">Seu progresso fica sincronizado entre web e desktop, num ecossistema só.</p>
                 </div>
             </div>
         </div>
         
         <div class="relative z-10 mt-12 text-sm text-indigo-200/50 font-medium">
-            &copy; {new Date().getFullYear()} Cyanki Ecosystem. Open Source Learning.
+            &copy; {new Date().getFullYear()} Ecossistema Cyanki. Aprendizado de código aberto.
         </div>
     </div>
 
@@ -117,12 +117,12 @@
                     <span class="text-white font-extrabold text-2xl">C</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-neutral-900 dark:text-white">Cyanki</h1>
-                <p class="text-neutral-500">Welcome back. Please sign in.</p>
+                <p class="text-neutral-500">Que bom te ver de novo. Entre na sua conta.</p>
             </div>
 
             <div class="hidden lg:block mb-10">
-                <h2 class="text-3xl font-extrabold text-neutral-900 dark:text-white mb-2">Welcome back</h2>
-                <p class="text-neutral-500">Sign in to your account.</p>
+                <h2 class="text-3xl font-extrabold text-neutral-900 dark:text-white mb-2">Que bom te ver de novo</h2>
+                <p class="text-neutral-500">Entre na sua conta.</p>
             </div>
 
             {#if errorMessage}
@@ -133,13 +133,13 @@
 
             <form on:submit|preventDefault={handleLogin} class="space-y-5">
                 <div>
-                    <label class="block text-sm font-semibold mb-1.5 text-neutral-700 dark:text-neutral-300">Email Address</label>
+                    <label class="block text-sm font-semibold mb-1.5 text-neutral-700 dark:text-neutral-300">E-mail</label>
                     <input bind:value={email} type="email" required placeholder="you@example.com" class="w-full p-3.5 rounded-xl bg-white dark:bg-neutral-800 border items-center border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:border-indigo-500 focus:ring-indigo-500/20 transition-all outline-none placeholder:text-neutral-400 dark:text-white dark:placeholder-neutral-500" />
                 </div>
                 
                 <div>
                     <label class="block text-sm font-semibold mb-1.5 text-neutral-700 dark:text-neutral-300 flex justify-between">
-                        Password
+                        Senha
                         <a href="/forgot-password" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Esqueci minha senha</a>
                     </label>
                     <div class="relative">
@@ -160,17 +160,17 @@
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Signing in...
+                        Entrando...
                     {:else}
-                        Sign In
+                        Entrar
                     {/if}
                 </button>
             </form>
 
             <div class="mt-8 text-center">
                 <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                    New to Cyanki? 
-                    <a href="/register" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-colors">Create an account</a>
+                    Novo no Cyanki?
+                    <a href="/register" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-colors">Crie uma conta</a>
                 </p>
             </div>
         </div>

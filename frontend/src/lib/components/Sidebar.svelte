@@ -36,7 +36,7 @@
 </script>
 
 {#if isOpen}
-<div class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity" on:click={close} on:keydown={e => e.key === 'Escape' && close()} role="button" tabindex="0" aria-label="Close Sidebar"></div>
+<div class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity" on:click={close} on:keydown={e => e.key === 'Escape' && close()} role="button" tabindex="0" aria-label="Fechar menu lateral"></div>
 {/if}
 
 <aside class="fixed top-0 left-0 z-50 h-[100dvh] w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transform transition-transform duration-300 ease-in-out {isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 flex flex-col">

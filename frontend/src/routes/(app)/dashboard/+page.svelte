@@ -81,10 +81,10 @@
 	}
 
 	function formatDueDate(dateString: any) {
-	    if (!dateString) return 'New';
+	    if (!dateString) return 'Novo';
 	    const date = new Date(dateString);
-	    if (date.getTime() <= Date.now()) return 'Due Now';
-	    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+	    if (date.getTime() <= Date.now()) return 'Vence agora';
+	    return date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric', year: 'numeric' });
 	}
 
 	onMount(() => {
@@ -126,7 +126,7 @@
 		);
 		
 		if (isDuplicate) {
-		    alert("Duplicate Detected: You already have this exact flashcard in your Global Memory.");
+		    alert("Duplicata detectada: este flashcard já existe na sua Memória Global.");
 		    return;
 		}
 		
@@ -162,14 +162,14 @@
 	<div class="max-w-4xl mx-auto space-y-8">
 		<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
 			<div>
-				<h1 class="text-3xl font-extrabold tracking-tight mb-2">Dashboard</h1>
-				<p class="text-neutral-500">Welcome back. Keep up the momentum!</p>
+				<h1 class="text-3xl font-extrabold tracking-tight mb-2">Painel</h1>
+				<p class="text-neutral-500">Que bom te ver de novo. Mantenha o ritmo!</p>
 			</div>
 			{#if savedFilters.length > 0}
 				<div class="flex flex-col">
-					<span class="text-xs font-bold text-neutral-500 mb-1">Active Workspace</span>
+					<span class="text-xs font-bold text-neutral-500 mb-1">Área de trabalho ativa</span>
 					<select bind:value={activeWorkspaceId} class="p-2 rounded-xl text-sm font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer">
-						<option value="all">🌐 Global Memory</option>
+						<option value="all">🌐 Memória Global</option>
 						{#each savedFilters as sf}
 							<option value={sf.id}>📁 {sf.name}</option>
 						{/each}
@@ -205,7 +205,7 @@
 							<div class="h-full bg-indigo-500 rounded-full transition-all" style="width: {Math.min(($lastSession.cardIndex / $lastSession.totalCards) * 100, 100)}%"></div>
 						</div>
 						<span class="text-xs font-semibold text-neutral-500 dark:text-neutral-400 whitespace-nowrap">
-							{$lastSession.cardIndex} / {$lastSession.totalCards} cards
+							{$lastSession.cardIndex} / {$lastSession.totalCards} cartões
 						</span>
 					</div>
 				{/if}
@@ -252,52 +252,52 @@
 		<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
 		    <div class="p-6 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl shadow-sm border border-indigo-100 dark:border-indigo-800/50 flex flex-col items-center justify-center transition-transform hover:scale-105 cursor-default">
 		        <span class="text-4xl font-black text-indigo-600 dark:text-indigo-400 mb-2">{workspaceFlashcards.length}</span>
-		        <span class="text-xs text-indigo-800/70 dark:text-indigo-300 font-extrabold uppercase tracking-widest text-center">{activeWorkspaceId === 'all' ? 'Global Cards' : 'Workspace Cards'}</span>
+		        <span class="text-xs text-indigo-800/70 dark:text-indigo-300 font-extrabold uppercase tracking-widest text-center">{activeWorkspaceId === 'all' ? 'Cartões globais' : 'Cartões da área'}</span>
 		    </div>
 		    <a href="/history" class="p-6 bg-orange-50 dark:bg-orange-900/20 rounded-2xl shadow-sm border border-orange-100 dark:border-orange-800/50 flex flex-col items-center justify-center transition-transform hover:scale-105 cursor-pointer relative group">
 		        <span class="text-4xl font-black text-orange-600 dark:text-orange-400 mb-2">{reviewsToday}</span>
-		        <span class="text-xs text-orange-800/70 dark:text-orange-300 font-extrabold uppercase tracking-widest text-center">Reviews Today</span>
+		        <span class="text-xs text-orange-800/70 dark:text-orange-300 font-extrabold uppercase tracking-widest text-center">Revisões hoje</span>
 		        <div class="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center backdrop-blur-[1px]">
-		            <span class="font-bold text-orange-700 dark:text-orange-300">View History &rarr;</span>
+		            <span class="font-bold text-orange-700 dark:text-orange-300">Ver histórico &rarr;</span>
 		        </div>
 		    </a>
 		    <div class="p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl shadow-sm border border-emerald-100 dark:border-emerald-800/50 flex flex-col items-center justify-center transition-transform hover:scale-105 cursor-default">
 		        <span class="text-4xl font-black text-emerald-600 dark:text-emerald-400 mb-2">{totalReviews}</span>
-		        <span class="text-xs text-emerald-800/70 dark:text-emerald-300 font-extrabold uppercase tracking-widest text-center">Workspace XP</span>
+		        <span class="text-xs text-emerald-800/70 dark:text-emerald-300 font-extrabold uppercase tracking-widest text-center">XP da área</span>
 		    </div>
 		</section>
 
 		<section class="p-6 bg-white dark:bg-neutral-800 rounded-2xl shadow-xl shadow-indigo-500/5 ring-1 ring-neutral-200 dark:ring-neutral-700">
-			<h2 class="text-2xl font-bold mb-4">Add Flashcard</h2>
+			<h2 class="text-2xl font-bold mb-4">Adicionar flashcard</h2>
 			<div class="space-y-4">
 				<div>
-					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Front</label>
-					<textarea bind:value={front} class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none resize-none dark:text-white dark:placeholder-neutral-500" rows="2" placeholder="Question or term..."></textarea>
+					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Frente</label>
+					<textarea bind:value={front} class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none resize-none dark:text-white dark:placeholder-neutral-500" rows="2" placeholder="Pergunta ou termo..."></textarea>
 				</div>
 				<div>
-					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Back</label>
-					<textarea bind:value={back} class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none resize-none dark:text-white dark:placeholder-neutral-500" rows="3" placeholder="Answer or explanation..."></textarea>
+					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Verso</label>
+					<textarea bind:value={back} class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none resize-none dark:text-white dark:placeholder-neutral-500" rows="3" placeholder="Resposta ou explicação..."></textarea>
 				</div>
 				<div>
-					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Tags (comma separated)</label>
-					<input bind:value={tags} type="text" class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" placeholder="e.g. math, geometry, #important" />
+					<label class="block text-sm font-medium mb-1 dark:text-neutral-300">Tags (separadas por vírgula)</label>
+					<input bind:value={tags} type="text" class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" placeholder="ex.: matemática, geometria, #importante" />
 				</div>
 				<button on:click={addFlashcard} class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md transition-all active:scale-[0.98] cursor-pointer">
-					Save Flashcard
+					Salvar flashcard
 				</button>
 			</div>
 		</section>
 
 		<section class="space-y-4">
 			<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-			    <h2 class="text-2xl font-bold flex items-center gap-2">Your Deck <span class="text-indigo-600 bg-indigo-100 dark:bg-indigo-500/20 dark:text-indigo-400 text-xs px-2 py-1 rounded-full">{filteredFlashcards.length} cards</span></h2>
+			    <h2 class="text-2xl font-bold flex items-center gap-2">Seu baralho <span class="text-indigo-600 bg-indigo-100 dark:bg-indigo-500/20 dark:text-indigo-400 text-xs px-2 py-1 rounded-full">{filteredFlashcards.length} cartões</span></h2>
 			    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
 			        <select bind:value={sortBy} class="p-2.5 text-sm rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none shadow-sm transition-shadow dark:text-white cursor-pointer font-medium text-neutral-600">
-			            <option value="due">Sort by Next Review</option>
-			            <option value="newest">Sort by Newest</option>
-			            <option value="oldest">Sort by Oldest</option>
+			            <option value="due">Ordenar por próxima revisão</option>
+			            <option value="newest">Ordenar por mais recente</option>
+			            <option value="oldest">Ordenar por mais antigo</option>
 			        </select>
-			        <input bind:value={searchQuery} type="text" placeholder="Search cards & tags..." class="w-full sm:w-64 p-2.5 text-sm rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none shadow-sm transition-shadow dark:text-white dark:placeholder-neutral-500" />
+			        <input bind:value={searchQuery} type="text" placeholder="Buscar cartões e tags..." class="w-full sm:w-64 p-2.5 text-sm rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none shadow-sm transition-shadow dark:text-white dark:placeholder-neutral-500" />
 			    </div>
 			</div>
 			
@@ -327,11 +327,11 @@
 				
 				{#if flashcards.length === 0}
 					<div class="col-span-full py-12 text-center text-neutral-500 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
-						<p>No flashcards yet. Add one above!</p>
+						<p>Nenhum flashcard ainda. Adicione um acima!</p>
 					</div>
 				{:else if filteredFlashcards.length === 0}
 				    <div class="col-span-full py-12 text-center text-neutral-500 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
-						<p>No results found for "{searchQuery}".</p>
+						<p>Nenhum resultado para "{searchQuery}".</p>
 					</div>
 				{/if}
 			</div>
@@ -344,17 +344,17 @@
 			            disabled={currentPage === 1}
 			            class="px-5 py-2 rounded-xl text-sm font-bold bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
 			        >
-			            Previous
+			            Anterior
 			        </button>
 			        <span class="text-sm font-semibold text-neutral-500 dark:text-neutral-400">
-			            Page {currentPage} of {totalPages}
+			            Página {currentPage} de {totalPages}
 			        </span>
 			        <button 
 			            on:click={() => currentPage = Math.min(totalPages, currentPage + 1)} 
 			            disabled={currentPage === totalPages}
 			            class="px-5 py-2 rounded-xl text-sm font-bold bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
 			        >
-			            Next
+			            Próxima
 			        </button>
 			    </div>
 			{/if}

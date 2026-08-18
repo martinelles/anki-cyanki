@@ -12,7 +12,7 @@
 
     async function handleRegister() {
         if (password !== confirmPassword) {
-            errorMessage = 'Passwords do not match';
+            errorMessage = 'As senhas não conferem.';
             return;
         }
 
@@ -28,7 +28,7 @@
 
             if (!response.ok) {
                 const err = await response.json();
-                throw new Error(err.detail || 'Registration failed');
+                throw new Error(err.detail || 'Não foi possível criar a conta.');
             }
 
             // Immediately login after registration
@@ -66,8 +66,8 @@
 
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center p-6">
     <div class="bg-white dark:bg-neutral-800 p-8 rounded-3xl shadow-xl w-full max-w-md ring-1 ring-neutral-200 dark:ring-neutral-700">
-        <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-2">Create Account</h1>
-        <p class="text-neutral-500 mb-8">Start your continuous learning journey.</p>
+        <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-2">Criar conta</h1>
+        <p class="text-neutral-500 mb-8">Comece sua jornada de aprendizado contínuo.</p>
 
         {#if errorMessage}
             <div class="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100 dark:bg-red-900/20 dark:border-red-800/50">
@@ -77,27 +77,27 @@
 
         <form on:submit|preventDefault={handleRegister} class="space-y-4">
             <div>
-                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Email</label>
+                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">E-mail</label>
                 <input bind:value={email} type="email" required class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" />
             </div>
             
             <div>
-                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Password</label>
+                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Senha</label>
                 <input bind:value={password} type="password" required class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Confirm Password</label>
+                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Confirmar senha</label>
                 <input bind:value={confirmPassword} type="password" required class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" />
             </div>
 
             <button type="submit" disabled={isLoading} class="w-full py-3 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-70">
-                {isLoading ? 'Creating account...' : 'Sign Up'}
+                {isLoading ? 'Criando conta...' : 'Cadastrar'}
             </button>
         </form>
 
         <p class="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-8">
-            Already have an account? <a href="/login" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Log in</a>
+            Já tem uma conta? <a href="/login" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Entrar</a>
         </p>
     </div>
 </div>

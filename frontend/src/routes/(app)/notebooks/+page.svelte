@@ -123,8 +123,8 @@
 	<div class="max-w-4xl mx-auto space-y-8 py-8 px-4">
 		<div class="mb-6 flex items-center justify-between gap-4 flex-wrap">
 				<div>
-					<h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white">Your Notebooks</h1>
-					<p class="text-neutral-500 mt-1">PKM connected directly to your Spaced Repetition engine.</p>
+					<h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white">Seus cadernos</h1>
+					<p class="text-neutral-500 mt-1">PKM ligado direto ao seu motor de repetição espaçada.</p>
 				</div>
 				<button
 					on:click={resyncAllNotebooks}
@@ -138,15 +138,15 @@
 						{resyncStatus || 'Sincronizando...'}
 					{:else}
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-						{resyncStatus || 'Resync All'}
+						{resyncStatus || 'Ressincronizar tudo'}
 					{/if}
 				</button>
 		</div>
 
 	<section class="flex flex-col sm:flex-row gap-4 p-6 bg-white dark:bg-neutral-800 rounded-2xl shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700">
-		<input bind:value={titleInput} type="text" placeholder="Notebook Title..." class="flex-1 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none dark:text-white dark:placeholder-neutral-500" />
+		<input bind:value={titleInput} type="text" placeholder="Título do caderno..." class="flex-1 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 outline-none dark:text-white dark:placeholder-neutral-500" />
 		<button on:click={createNotebook} class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md transition-all active:scale-[0.98]">
-			Create
+			Criar
 		</button>
 		<a href="/notebooks/ai-generate" class="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-lg shadow-md transition-all active:scale-[0.98] text-sm whitespace-nowrap">
 			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -161,9 +161,9 @@
 	<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
 		{#each notebooks as notebook (notebook.id)}
 			<div class="relative p-6 bg-white dark:bg-neutral-800 rounded-2xl shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 group hover:shadow-md transition-all">
-			    <button on:click={() => deleteNotebook(notebook.id)} class="absolute top-4 right-4 text-neutral-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">Delete</button>
+			    <button on:click={() => deleteNotebook(notebook.id)} class="absolute top-4 right-4 text-neutral-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">Excluir</button>
 				<h3 class="font-bold text-xl mb-2 text-neutral-800 dark:text-neutral-100">{notebook.title}</h3>
-				<p class="text-neutral-500 dark:text-neutral-400 text-sm mb-6">Last edited: {new Date(notebook.updatedAt).toLocaleDateString()}</p>
+				<p class="text-neutral-500 dark:text-neutral-400 text-sm mb-6">Última edição: {new Date(notebook.updatedAt).toLocaleDateString('pt-BR')}</p>
 				<div class="flex flex-col md:flex-row gap-2">
 				   <a href="/notebooks/{notebook.id}" class="inline-flex items-center justify-center px-4 py-2 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors w-full md:w-auto">
 				       Editor Markdown
