@@ -2,7 +2,7 @@ import uuid
 import logging
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -10,6 +10,7 @@ from sqlalchemy.future import select
 from src import models, schemas, auth
 from src.config import settings
 from src.database import get_db
+from src.ratelimit import limiter
 from src.email_service import send_password_reset_email
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,8 @@ router = APIRouter(
 
 
 @router.post("/register", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
-async def register(user: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/hour")
+async def register(request: Request, user: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(models.User).filter(models.User.email == user.email))
     db_user = result.scalars().first()
     if db_user:
@@ -36,7 +38,8 @@ async def register(user: schemas.UserCreate, db: AsyncSession = Depends(get_db))
 
 
 @router.post("/login", response_model=schemas.Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute;30/hour")
+async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(models.User).filter(models.User.email == form_data.username))
     user = result.scalars().first()
 
@@ -55,7 +58,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
 
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
+@limiter.limit("3/hour")
 async def forgot_password(
+    request: Request,
     body: schemas.ForgotPasswordRequest,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
@@ -98,7 +103,8 @@ def _send_reset_email(to_email: str, reset_url: str) -> None:
 
 
 @router.post("/reset-password", status_code=status.HTTP_200_OK)
-async def reset_password(body: schemas.ResetPasswordRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("10/hour")
+async def reset_password(request: Request, body: schemas.ResetPasswordRequest, db: AsyncSession = Depends(get_db)):
     """Validate token and update password."""
     result = await db.execute(
         select(models.PasswordResetToken).filter(models.PasswordResetToken.token == body.token)

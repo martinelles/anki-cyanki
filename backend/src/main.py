@@ -3,6 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.routers import sync
 from src.config import settings
+from src.ratelimit import limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
 from src.database import engine, Base
 from sqlalchemy import text
 import src.models as models # Ensuring models are loaded into Base
@@ -22,6 +25,10 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Cyanki API", version="0.1.0", lifespan=lifespan)
+
+# Limite de tentativas nas rotas de autenticacao (ver src/ratelimit.py)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 # CORS: a lista vem do ambiente (ver Settings.cors_origins), para o dominio

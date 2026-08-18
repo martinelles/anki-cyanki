@@ -4,6 +4,7 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
 from src.main import app
+from src.ratelimit import limiter
 from src.database import Base, get_db
 from src.models import User
 
@@ -24,6 +25,10 @@ async def override_get_db():
         yield session
 
 app.dependency_overrides[get_db] = override_get_db
+
+# Os testes repetem login e registro de proposito; o limite por IP
+# reprovaria a suite sem dizer nada sobre o codigo.
+limiter.enabled = False
 
 @pytest_asyncio.fixture(scope="session")
 def anyio_backend():
