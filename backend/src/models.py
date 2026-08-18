@@ -85,21 +85,3 @@ class PasswordResetToken(Base):
     used = Column(Boolean, default=False)
 
     user = relationship("User")
-
-
-class InviteCode(Base):
-    """Convite de uso único para criar conta.
-
-    O /register é fechado: sem um código válido e ainda não usado, ninguém
-    cria conta. A exceção é a primeira conta do servidor, quando a tabela de
-    usuários está vazia — é assim que o dono entra sem depender de convite.
-    """
-    __tablename__ = "invite_codes"
-
-    id = Column(Integer, primary_key=True, index=True)
-    code = Column(String, unique=True, index=True, nullable=False)
-    created_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    used_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    expires_at = Column(DateTime, nullable=True)
-    used_at = Column(DateTime, nullable=True)

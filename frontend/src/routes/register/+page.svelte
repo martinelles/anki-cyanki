@@ -7,7 +7,6 @@
     let email = '';
     let password = '';
     let confirmPassword = '';
-    let inviteCode = '';
     let isLoading = false;
     let errorMessage = '';
 
@@ -24,7 +23,7 @@
             const response = await fetch(`${PUBLIC_API_URL}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, invite_code: inviteCode.trim() })
+                body: JSON.stringify({ email, password })
             });
 
             if (!response.ok) {
@@ -90,14 +89,6 @@
             <div>
                 <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Confirmar senha</label>
                 <input bind:value={confirmPassword} type="password" required class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300">Código de convite</label>
-                <input bind:value={inviteCode} type="text" autocomplete="off" class="w-full p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 focus:ring-2 focus:ring-indigo-500 transition-shadow outline-none dark:text-white dark:placeholder-neutral-500" />
-                <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-                    Peça a quem já usa o Cyanki. Só a primeira conta do servidor dispensa convite.
-                </p>
             </div>
 
             <button type="submit" disabled={isLoading} class="w-full py-3 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md transition-all active:scale-[0.98] disabled:opacity-70">
