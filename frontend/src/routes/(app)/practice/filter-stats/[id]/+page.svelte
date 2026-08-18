@@ -281,7 +281,7 @@
 
         <div class="bg-white dark:bg-neutral-800 rounded-2xl p-5 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 flex flex-col items-center justify-center gap-1">
             <span class="text-3xl font-black text-indigo-600 dark:text-indigo-400">{reviewedCards}</span>
-            <span class="text-xs font-bold text-neutral-500 uppercase tracking-widest text-center">Cards Revistos</span>
+            <span class="text-xs font-bold text-neutral-500 uppercase tracking-widest text-center">Cartões revistos</span>
             <span class="text-[10px] text-neutral-400">de {totalCards} no filtro</span>
         </div>
 

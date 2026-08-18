@@ -824,7 +824,7 @@
 
 							<div class="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-2xl p-5 text-left space-y-4">
 								<div>
-									<label class="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">Cards por grupo</label>
+									<label class="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">Cartões por grupo</label>
 									<input
 										type="number"
 										bind:value={groupSize}
@@ -947,7 +947,7 @@
 							<!-- Reorganize section -->
 							<div class="pt-2 border-t border-neutral-200 dark:border-neutral-700 flex items-end gap-3">
 								<div class="flex-1">
-									<label class="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Cards por grupo</label>
+									<label class="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-1">Cartões por grupo</label>
 									<input
 										type="number"
 										bind:value={groupSize}

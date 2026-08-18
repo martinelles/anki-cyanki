@@ -557,7 +557,7 @@
     <section class="bg-white dark:bg-neutral-800 rounded-2xl ring-1 ring-neutral-200 dark:ring-neutral-700 overflow-hidden">
         <div class="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center justify-between gap-4">
             <div>
-                <h2 class="text-sm font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Cards Avulsos</h2>
+                <h2 class="text-sm font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">Cartões avulsos</h2>
                 <p class="text-xs text-neutral-400 mt-0.5">Flashcards que não pertencem a nenhum caderno. <a href="/flashcards" class="text-indigo-500 hover:underline">Gerenciar todos os flashcards →</a></p>
             </div>
             {#if orphanCards.length > 0}

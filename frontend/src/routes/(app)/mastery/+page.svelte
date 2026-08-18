@@ -269,7 +269,7 @@
                             </div>
                             <div class="bg-neutral-50 dark:bg-neutral-900/40 rounded-lg p-2">
                                 <div class="text-sm font-black text-neutral-700 dark:text-neutral-300">{t.totalCards}</div>
-                                <div class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider mt-0.5">Cards</div>
+                                <div class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider mt-0.5">Cartões</div>
                             </div>
                         </div>
 

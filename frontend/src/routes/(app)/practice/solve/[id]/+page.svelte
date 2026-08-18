@@ -153,7 +153,7 @@
                 <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent pointer-events-none"></div>
                 <div class="text-7xl mb-6 transform hover:scale-110 transition-transform cursor-default">🎯</div>
                 <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">Treino Concluído!</h1>
-                <p class="text-neutral-400 mb-8 max-w-sm mx-auto">Você esgotou todas as questões deste filtro. Retorne para a tela principal para revisar as estatísticas no Dashboard ou tentar uma nova combinação de filtros.</p>
+                <p class="text-neutral-400 mb-8 max-w-sm mx-auto">Você esgotou todas as questões deste filtro. Retorne para a tela principal para revisar as estatísticas no Painel ou tentar uma nova combinação de filtros.</p>
                 
                 <div class="flex flex-col md:flex-row gap-4 justify-center">
                     <button on:click={finishSession} class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/25 transition-all text-sm uppercase tracking-wider hover:-translate-y-1">

@@ -327,7 +327,7 @@
 <h2>Resumo</h2>
 <div class="kpis">
   <div class="kpi"><div class="kpi-val">${totalReviews}</div><div class="kpi-lbl">Revisões</div></div>
-  <div class="kpi"><div class="kpi-val">${uniqueCards}</div><div class="kpi-lbl">Cards únicos</div></div>
+  <div class="kpi"><div class="kpi-val">${uniqueCards}</div><div class="kpi-lbl">Cartões únicos</div></div>
   <div class="kpi"><div class="kpi-val" style="color:${accuracy>=70?'#10b981':accuracy>=50?'#f59e0b':'#ef4444'}">${accuracy}%</div><div class="kpi-lbl">Acerto (Good+Easy)</div></div>
   <div class="kpi"><div class="kpi-val" style="color:#f97316">🔥 ${streak}</div><div class="kpi-lbl">Sequência (dias)</div></div>
 </div>
@@ -449,7 +449,7 @@
         </div>
         <div class="p-5 bg-white dark:bg-neutral-800 rounded-2xl ring-1 ring-neutral-200 dark:ring-neutral-700 flex flex-col items-center justify-center text-center">
             <span class="text-3xl font-black text-amber-600 dark:text-amber-400">{uniqueCards}</span>
-            <span class="text-xs text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mt-1">Cards únicos</span>
+            <span class="text-xs text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider mt-1">Cartões únicos</span>
         </div>
         <div class="p-5 bg-white dark:bg-neutral-800 rounded-2xl ring-1 ring-neutral-200 dark:ring-neutral-700 flex flex-col items-center justify-center text-center">
             <span class="text-3xl font-black {accuracy >= 70 ? 'text-emerald-600 dark:text-emerald-400' : accuracy >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'}">{accuracy}%</span>
@@ -629,7 +629,7 @@
                         </div>
                         <div class="p-4 bg-neutral-50 dark:bg-neutral-900/50 rounded-2xl text-center col-span-2 md:col-span-1">
                             <p class="text-2xl font-black text-neutral-300">{t.activeCards}</p>
-                            <p class="text-xs text-neutral-500 mt-1">Cards revisados</p>
+                            <p class="text-xs text-neutral-500 mt-1">Cartões revisados</p>
                         </div>
                     </div>
 

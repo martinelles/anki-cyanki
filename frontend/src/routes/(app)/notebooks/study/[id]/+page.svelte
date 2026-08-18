@@ -153,7 +153,7 @@
                     <span class="state-icon">🏆</span>
                     <h2>Caderno Limpo!</h2>
                     <p>Nenhuma revisão pendente para este caderno.</p>
-                    <button on:click={finishSession} class="btn-neutral">Voltar para Notebooks</button>
+                    <button on:click={finishSession} class="btn-neutral">Voltar para Cadernos</button>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@
                     <span class="state-icon">🎉</span>
                     <h2>Estudo Concluído!</h2>
                     <p>Todas as revisões FSRS foram processadas.</p>
-                    <button on:click={finishSession} class="btn-primary">Voltar para Notebooks</button>
+                    <button on:click={finishSession} class="btn-primary">Voltar para Cadernos</button>
                 </div>
             </div>
 

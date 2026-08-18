@@ -168,7 +168,7 @@
                     <span class="state-icon">🏆</span>
                     <h2>Tudo em dia!</h2>
                     <p>Sem revisões pendentes no momento.</p>
-                    <a href="/dashboard" class="btn-neutral">Voltar ao Dashboard</a>
+                    <a href="/dashboard" class="btn-neutral">Voltar ao Painel</a>
                 </div>
             </div>
 
@@ -178,7 +178,7 @@
                     <span class="state-icon">🏆</span>
                     <h2>Sem cartas para estudar.</h2>
                     <p>Adicione flashcards para começar.</p>
-                    <a href="/dashboard" class="btn-neutral">Voltar ao Dashboard</a>
+                    <a href="/dashboard" class="btn-neutral">Voltar ao Painel</a>
                 </div>
             </div>
 
