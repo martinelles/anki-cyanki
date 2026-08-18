@@ -1,6 +1,16 @@
 import os
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
 from typing import List, Optional
+
+_CHAVES_DE_EXEMPLO = {
+    "supersecretkey-dev-only",
+    "troque-esta-chave-em-producao-dev-only",
+    "changeme",
+    "secret",
+    "",
+}
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Cyanki API"
@@ -43,5 +53,25 @@ class Settings(BaseSettings):
         if self.ENVIRONMENT != "production":
             origins.extend(self._DEV_ORIGINS)
         return sorted(set(origins))
+
+    @model_validator(mode="after")
+    def _recusar_chave_de_exemplo(self):
+        """Em producao, uma SECRET_KEY fraca assina token que qualquer um forja.
+
+        Quem conhece a chave emite um JWT valido para qualquer e-mail e entra
+        como qualquer usuario, sem senha. Como o valor padrao esta publicado
+        neste repositorio, subir com ele equivale a nao ter autenticacao.
+        """
+        if self.ENVIRONMENT != "production":
+            return self
+        chave = self.SECRET_KEY.strip()
+        if chave.lower() in _CHAVES_DE_EXEMPLO or len(chave) < 32:
+            raise ValueError(
+                "SECRET_KEY invalida para ENVIRONMENT=production: use um valor "
+                "proprio com 32+ caracteres. Gere com: "
+                "python -c \"import secrets; print(secrets.token_urlsafe(48))\""
+            )
+        return self
+
 
 settings = Settings()
