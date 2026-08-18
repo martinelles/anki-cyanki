@@ -33,7 +33,11 @@ services:
       - ENVIRONMENT=production
     restart: unless-stopped
     depends_on:
-      - db
+      # Esperar o container subir não basta: o create_all do lifespan roda uma vez
+      # e, se o Postgres ainda não aceita conexão, a exceção é engolida e a API
+      # sobe sem tabela nenhuma. Mesmo motivo do docker-compose.yml.
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:15-alpine
@@ -48,6 +52,12 @@ services:
     volumes:
       - postgres_data_prod:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USER} -d $${DB_NAME_PROD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
   cloudflared:
     image: cloudflare/cloudflared:latest
