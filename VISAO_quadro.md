@@ -11,7 +11,7 @@
 | Em andamento | 1 |
 | Revisao | 0 |
 | Bloqueado | 0 |
-| Concluido | 43 |
+| Concluido | 45 |
 
 ---
 
@@ -40,7 +40,7 @@
 
 - `UC-34` Multiplicador de Intervalo FSRS por Tipo de Cartão · **Chrystian Nascimento**
 
-## Concluido (43)
+## Concluido (45)
 
 **2.1 Offline & Sincronização**
 
@@ -126,4 +126,9 @@
 - `ISS-01` Incluir botão de voltar no menu Profile · **Martinelle Santos**
 - `ISS-03` Padronizar língua do produto entre inglês e português · **Martinelle Santos**
 - `ISS-04` Inserir um modelo ou instruções de .md ao criar um caderno · **Martinelle Santos**
+- `ISS-07` Fila única do dia no dashboard — um só Continuar · **Martinelle Santos**
+
+**Achados do codigo**
+
+- `ACH-03` Checklist de criterios chegava truncado no primeiro item · **Martinelle Santos**
 

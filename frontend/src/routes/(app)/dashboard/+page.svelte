@@ -3,6 +3,7 @@
 	import { db, type Flashcard, type SavedFilter, type ReviewLog } from '$lib/db';
 	import { syncEngine } from '$lib/sync';
 	import { getAllCardStates } from '$lib/fsrs';
+	import { buildDailyQueue, SEGMENT_LABEL, type DailyQueue, type QueueSegmentKind } from '$lib/dailyQueue';
 	import { nanoid } from 'nanoid';
 	import { liveQuery } from 'dexie';
 	import { session } from '$lib/authStore';
@@ -12,6 +13,16 @@
 	let front = '';
 	let back = '';
 	let tags = '';
+
+	// ISS-07: a fila única do dia — o painel responde "o que eu faço agora" com
+	// um botão só, e as onze telas de estudo viram detalhe.
+	let dailyQueue: DailyQueue | null = null;
+	const SEGMENT_STYLE: Record<QueueSegmentKind, string> = {
+		vencidos: 'bg-rose-500/15 text-rose-100 ring-rose-300/30',
+		subgrupo: 'bg-violet-500/15 text-violet-100 ring-violet-300/30',
+		erros: 'bg-amber-500/15 text-amber-100 ring-amber-300/30',
+		novos: 'bg-emerald-500/15 text-emerald-100 ring-emerald-300/30',
+	};
 
 	let flashcards: Flashcard[] = [];
 	let cardStates = new Map<string, any>();
@@ -92,12 +103,14 @@
 		const subscription = observable.subscribe(async (result) => {
 			flashcards = result;
 			cardStates = await getAllCardStates();
+			dailyQueue = await buildDailyQueue();
 		});
 
 		const reviewsObservable = liveQuery(() => db.reviewLogs.toArray());
-		const revSub = reviewsObservable.subscribe(logs => {
+		const revSub = reviewsObservable.subscribe(async logs => {
 		    allReviewLogs = logs;
 		    // The reactive block above will handle re-calculating the isolated metrics
+		    dailyQueue = await buildDailyQueue();
 		});
 
 		const filterObservable = liveQuery(() => db.savedFilters.orderBy('createdAt').reverse().toArray());
@@ -178,15 +191,58 @@
 			{/if}
 		</div>
 
+		<!-- ISS-07: Fila do dia — a única porta de entrada de estudo do painel -->
+		<section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 p-6 shadow-lg shadow-indigo-500/20">
+			<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,.18),transparent_60%)] pointer-events-none"></div>
+			<div class="relative flex flex-col sm:flex-row sm:items-center gap-5">
+				<div class="flex-1 min-w-0">
+					<span class="text-[11px] font-black uppercase tracking-widest text-indigo-200">Fila de hoje</span>
+					{#if dailyQueue === null}
+						<p class="text-2xl font-extrabold text-white mt-1">Montando sua fila…</p>
+					{:else if dailyQueue.total === 0}
+						<p class="text-2xl font-extrabold text-white mt-1">Tudo em dia 🏆</p>
+						<p class="text-sm text-indigo-100/80 mt-1">Nada vencido, nada pendente. Adicione cartões ou volte amanhã.</p>
+					{:else}
+						<p class="text-2xl font-extrabold text-white mt-1">
+							{dailyQueue.total} {dailyQueue.total === 1 ? 'cartão' : 'cartões'} para agora
+						</p>
+						<div class="flex flex-wrap gap-2 mt-3">
+							{#each Object.entries(dailyQueue.counts) as [kind, count]}
+								{#if count > 0}
+									<span class="px-2.5 py-1 rounded-full text-xs font-bold ring-1 {SEGMENT_STYLE[kind as QueueSegmentKind]}">
+										{count} {SEGMENT_LABEL[kind as QueueSegmentKind].toLowerCase()}
+									</span>
+								{/if}
+							{/each}
+						</div>
+						{#if dailyQueue.counts.subgrupo > 0 && dailyQueue.groupLabel}
+							<p class="text-xs text-indigo-100/70 mt-2 truncate">Subgrupo em curso: {dailyQueue.groupLabel}</p>
+						{/if}
+					{/if}
+				</div>
+				<div class="shrink-0">
+					{#if dailyQueue && dailyQueue.total > 0}
+						<a href="/study" class="block w-full sm:w-auto text-center px-8 py-4 bg-white text-indigo-700 font-black text-lg rounded-2xl shadow-lg transition-all hover:-translate-y-0.5 active:scale-95">
+							Continuar →
+						</a>
+					{:else if dailyQueue}
+						<a href="/study" class="block w-full sm:w-auto text-center px-6 py-3 bg-white/15 text-white font-bold rounded-2xl ring-1 ring-white/30 transition hover:bg-white/25">
+							Prática extra
+						</a>
+					{/if}
+				</div>
+			</div>
+		</section>
+
 		<!-- UC-11: Resume Widget — shown when user has an active study session context -->
-		{#if $lastSession && (Date.now() - $lastSession.savedAt) < 86_400_000}
+		{#if $lastSession && $lastSession.type !== 'global' && (Date.now() - $lastSession.savedAt) < 86_400_000}
 		<section class="relative overflow-hidden rounded-2xl border border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-950/60 dark:to-violet-950/60 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm">
 			<!-- Decorative glow -->
 			<div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none"></div>
 
 			<div class="flex-1 min-w-0">
 				<div class="flex items-center gap-2 mb-1">
-					<span class="text-xs font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">Continuar de onde parou</span>
+					<span class="text-xs font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">Sessão avulsa em aberto</span>
 					<span class="text-xs text-neutral-400 dark:text-neutral-500">{timeAgo($lastSession.savedAt)}</span>
 				</div>
 				<p class="font-bold text-neutral-800 dark:text-neutral-100 truncate text-lg">
@@ -213,7 +269,7 @@
 
 			<div class="flex items-center gap-2 shrink-0">
 				<a href={getResumeUrl($lastSession)} class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm shadow-md shadow-indigo-500/20 transition-all hover:-translate-y-0.5 active:scale-95">
-					Continuar →
+					Retomar →
 				</a>
 				<button
 					on:click={() => clearSession()}

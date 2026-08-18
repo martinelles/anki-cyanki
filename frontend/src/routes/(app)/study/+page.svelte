@@ -1,14 +1,19 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
-    import { getDueCards, getAllCardStates, processReview, Rating } from '$lib/fsrs';
+    import { getAllCardStates, processReview, Rating } from '$lib/fsrs';
+    import { buildDailyQueue, SEGMENT_LABEL, type QueueEntry } from '$lib/dailyQueue';
     import { addXP, addCoins, checkStreak } from '$lib/stores/gamification';
     import { saveSession, clearSession } from '$lib/stores/sessionContext';
-    import { db, type Flashcard } from '$lib/db';
+    import { db } from '$lib/db';
     import { syncEngine } from '$lib/sync';
     import { Confetti } from 'svelte-confetti';
     import StudyCard from '$lib/components/StudyCard.svelte';
 
-    let dueCards: Flashcard[] = [];
+    // ISS-07: a tela de estudo consome a fila única do dia — a ordem vem de
+    // dailyQueue.ts, não de um getDueCards solto, para que o "Continuar" do
+    // painel e esta tela nunca discordem sobre o que vem agora.
+    let queue: QueueEntry[] = [];
+    let queueLabel = '';
     let currentIndex = 0;
     let showingAnswer = false;
     let showConfetti = false;
@@ -29,13 +34,21 @@
     }
 
     onMount(async () => {
-        dueCards = await getDueCards(10);
+        const daily = await buildDailyQueue();
+        queue = daily.entries;
+        queueLabel = daily.groupLabel ?? '';
         isLoading = false;
-        saveSession({ type: 'global', name: 'Estudo Global', cardIndex: 0, totalCards: dueCards.length, savedAt: Date.now() });
+        saveSession({ type: 'global', name: 'Fila do dia', cardIndex: 0, totalCards: queue.length, savedAt: Date.now() });
     });
 
-    $: currentCard = dueCards[currentIndex];
-    $: progress = dueCards.length > 0 ? (currentIndex / dueCards.length) * 100 : 0;
+    $: currentEntry = queue[currentIndex];
+    $: currentCard = currentEntry?.card;
+    $: progress = queue.length > 0 ? (currentIndex / queue.length) * 100 : 0;
+    $: sessionLabel = extraMode
+        ? 'Prática Extra'
+        : currentEntry
+            ? SEGMENT_LABEL[currentEntry.kind] + (currentEntry.kind === 'subgrupo' && queueLabel ? ` · ${queueLabel}` : '')
+            : 'Fila do dia';
 
     function flipCard() { showingAnswer = true; }
 
@@ -43,9 +56,11 @@
         const all = await db.flashcards.toArray();
         if (all.length === 0) return false;
         const states = await getAllCardStates();
-        dueCards = all.sort((a, b) =>
-            (states.get(a.id)?.due.getTime() ?? 0) - (states.get(b.id)?.due.getTime() ?? 0)
-        );
+        queue = all
+            .sort((a, b) =>
+                (states.get(a.id)?.due.getTime() ?? 0) - (states.get(b.id)?.due.getTime() ?? 0)
+            )
+            .map(card => ({ card, kind: 'vencidos' as const }));
         return true;
     }
 
@@ -58,7 +73,7 @@
 
         const nextIndex = currentIndex + 1;
 
-        if (nextIndex >= dueCards.length) {
+        if (nextIndex >= queue.length) {
             // Session batch done — sync and continue with extra cards
             syncEngine.triggerSync();
             clearSession();
@@ -70,7 +85,7 @@
                 currentIndex = nextIndex; // Will show "no cards" state
             }
         } else {
-            saveSession({ type: 'global', name: 'Estudo Global', cardIndex: nextIndex, totalCards: dueCards.length, savedAt: Date.now() });
+            saveSession({ type: 'global', name: 'Fila do dia', cardIndex: nextIndex, totalCards: queue.length, savedAt: Date.now() });
             currentIndex = nextIndex;
         }
 
@@ -89,7 +104,7 @@
 </script>
 
 <svelte:window on:keydown={(e) => {
-    if (isLoading || currentIndex >= dueCards.length) return;
+    if (isLoading || currentIndex >= queue.length) return;
     if (e.code === 'Space') { e.preventDefault(); if (!showingAnswer) flipCard(); }
     else if (showingAnswer) {
         if (e.code === 'Digit1') rateCard(Rating.Again);
@@ -117,7 +132,7 @@
                 Sair
             </a>
 
-            <span class="session-label">{extraMode ? 'Prática Extra' : 'Estudo Global'}</span>
+            <span class="session-label">{sessionLabel}</span>
 
             <button
                 on:click={toggleCriteriousMode}
@@ -132,11 +147,11 @@
         </div>
 
         <!-- Progress bar -->
-        {#if !isLoading && dueCards.length > 0}
+        {#if !isLoading && queue.length > 0}
             <div class="progress-track">
                 <div class="progress-fill" style="width:{progress}%"></div>
             </div>
-            <div class="progress-text">{currentIndex} / {dueCards.length}</div>
+            <div class="progress-text">{currentIndex} / {queue.length}</div>
         {/if}
     </header>
 
@@ -147,7 +162,7 @@
                 <div class="spinner"></div>
             </div>
 
-        {:else if dueCards.length === 0}
+        {:else if queue.length === 0}
             <div class="state-center">
                 <div class="state-box">
                     <span class="state-icon">🏆</span>
@@ -157,7 +172,7 @@
                 </div>
             </div>
 
-        {:else if currentIndex >= dueCards.length}
+        {:else if currentIndex >= queue.length}
             <div class="state-center">
                 <div class="state-box">
                     <span class="state-icon">🏆</span>
@@ -190,7 +205,7 @@
     </main>
 
     <!-- ── Sticky footer ───────────────────────────────────────────────────── -->
-    {#if !isLoading && currentCard && currentIndex < dueCards.length}
+    {#if !isLoading && currentCard && currentIndex < queue.length}
         <footer class="study-footer">
             {#if !showingAnswer}
                 <button on:click={flipCard} class="flip-btn">
