@@ -1,9 +1,23 @@
+import datetime
+
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional, Any, Dict
 
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    # Obrigatorio, exceto quando o servidor ainda nao tem nenhuma conta
+    invite_code: Optional[str] = None
+
+
+class InviteCodeResponse(BaseModel):
+    code: str
+    created_at: datetime.datetime
+    expires_at: Optional[datetime.datetime] = None
+    used_at: Optional[datetime.datetime] = None
+
+    class Config:
+        from_attributes = True
 
 class UserResponse(BaseModel):
     id: int

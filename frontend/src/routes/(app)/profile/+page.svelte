@@ -585,6 +585,17 @@
             {/if}
         </section>
 
+        <!-- ── Link convites ─────────────────────────────────────────────────── -->
+        <div class="flex items-center justify-between p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700">
+            <div>
+                <p class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Convites</p>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">O cadastro é fechado: gere um código para quem você quiser convidar.</p>
+            </div>
+            <a href="/convites" class="shrink-0 px-4 py-2 rounded-xl border border-neutral-200 dark:border-neutral-700 text-sm font-semibold text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
+                Gerenciar →
+            </a>
+        </div>
+
         <!-- ── Link privacidade ──────────────────────────────────────────────── -->
         <div class="flex items-center justify-between p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700">
             <div>
